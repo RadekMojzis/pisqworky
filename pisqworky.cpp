@@ -9,7 +9,10 @@ int main(void){
 	while(true){
 		int x, y;
 		cin >> x >> y;
-		game.move(x, y);
+		if(game.move(x, y)){
+			cout << "New game commencing!" << endl;
+			game.newgame();
+		}
 	}
 	
 	return 0;

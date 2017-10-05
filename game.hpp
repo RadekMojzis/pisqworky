@@ -7,7 +7,9 @@
 
 class Game{
 		void draw();
-		bool victory();
+		bool victory(int x, int y);
+		bool count_symbol(int in);
+		
 		std::vector<std::vector<int>> playfield;
 		bool player;
 	public:

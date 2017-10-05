@@ -25,7 +25,76 @@ void Game::draw(){
 	}
 }
 
-bool Game::victory(){
+bool Game::count_symbol(int in){
+	static int count = 0;
+	static int symbol;
+	if(in == 0){
+		count = 0;
+		return false;
+	}
+	if(count){
+		if(symbol == in){
+			count ++;
+			if(count == 5){
+				return true;
+			}
+		}
+		else{
+			symbol = in;
+			count = 1;
+		}
+	}
+	else{
+		symbol = in;
+		count = 1;
+	}
+	return false;
+}
+
+bool Game::victory(int x, int y){
+	int symbol;
+	for(int i = 0; i < 15; i++){
+		if(count_symbol(playfield[i][y]))
+			return true;
+	}
+
+	count_symbol(0);
+	for(int i = 0; i < 15; i++){
+		if(count_symbol(playfield[x][i]))
+			return true;
+	}
+	
+	// rising diagonal
+	int d_num = x+y;
+	count_symbol(0);
+	if(d_num <= 15){
+		for(int i = d_num, j = 0; i >= 0; i--, j++){
+			if(count_symbol(playfield[i][j]))
+				return true;
+		}
+	}
+	else{
+		for(int i = 14, j = d_num - 15; j < 15; i--, j++){
+			if(count_symbol(playfield[i][j]))
+				return true;
+		}
+	}
+	
+	d_num = x-y;
+	count_symbol(0);
+	if(d_num < 0){
+		for(int j = -d_num, i = 0; j >15; i++, j++){
+			if(count_symbol(playfield[i][j]))
+				return true;
+		}
+	}
+	else{
+		for(int i = d_num, j = 0; i < 15; i++, j++){
+			if(count_symbol(playfield[i][j]))
+				return true;
+		}
+	}
+	
 	return false;
 }
 
@@ -35,7 +104,7 @@ int Game::move(int x, int y){
 		player = !player;
 	}
 	draw();
-	if(victory()){
+	if(victory(x, y)){
 		cout << "Player: " << (player ? 'X' : 'O') << " won!" << endl;
 		return 1;
 	}
