@@ -67,7 +67,8 @@ bool Game::victory(int x, int y){
 	// rising diagonal
 	int d_num = x+y;
 	count_symbol(0);
-	if(d_num <= 15){
+	
+	if(d_num < 15){
 		for(int i = d_num, j = 0; i >= 0; i--, j++){
 			if(count_symbol(playfield[i][j]))
 				return true;
@@ -98,7 +99,9 @@ bool Game::victory(int x, int y){
 	return false;
 }
 
-int Game::move(int x, int y){
+int Game::move(int y, int x){
+	if(x > 14 || y > 14)
+		return 0;
 	if(!playfield[x][y]){
 		playfield[x][y] = player ? 'X' : 'O';
 		player = !player;
